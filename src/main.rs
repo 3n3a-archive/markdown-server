@@ -91,7 +91,7 @@ fn convert_md_to_html(file_stem: &str) -> PathBuf {
         pandoc.add_input(file_input_path.to_str().unwrap());
         pandoc.set_output(pandoc::OutputKind::File(file_output_path.clone()));
         pandoc.add_option(pandoc::PandocOption::Standalone);
-        pandoc.set_show_cmdline(true);
+        // pandoc.set_show_cmdline(true);
         pandoc.execute().unwrap();
     }
 
