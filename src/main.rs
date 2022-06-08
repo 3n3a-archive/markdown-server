@@ -3,7 +3,8 @@ extern crate rocket;
 
 use pandoc;
 use rocket::fs::{FileServer, NamedFile, Options};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
+use std::time::UNIX_EPOCH;
 
 const ASSETS_PATH: &str = "files";
 const PANDOC_IN_PATH: &str = "docs";
@@ -22,22 +23,23 @@ async fn files(file: PathBuf) -> Option<NamedFile> {
     let file_stem: &str;
     let file_extension: &str;
 
-    debug!(
-        "not file {}, ends with slash: {}, ends with indexhtml: {}",
-        !file.is_file(),
-        file.ends_with(""),
-        file.ends_with("index.html")
-    );
-
     // if path is Index try to display README
-    let path_is_index = file.ends_with("") || file.ends_with("/") || file.ends_with("/index.html") || file.ends_with("/index");
+    let path_is_index = (file == PathBuf::from(""))
+        || (file == PathBuf::from("/"))
+        || file.ends_with("/index.html")
+        || file.ends_with("/index");
 
+    debug!("Is index route {}", path_is_index);
     if !file.is_file() && path_is_index {
         file_stem = "README";
         file_extension = "md";
     } else {
         file_stem = file.file_stem().unwrap().to_str().unwrap();
-        file_extension = file.extension().unwrap().to_str().unwrap();
+        file_extension = file
+            .extension()
+            .unwrap_or(Path::new("").as_os_str())
+            .to_str()
+            .unwrap_or("");
     }
 
     let file_output_path = match file_extension {
@@ -59,7 +61,11 @@ fn convert_md_to_html(file_stem: &str) -> PathBuf {
     }
 
     let file_input_modified = file_input_path.metadata().unwrap().modified().unwrap();
-    let file_output_modified = file_output_path.metadata().unwrap().modified().unwrap();
+    let file_output_modified = if file_output_path.is_file() {
+        file_output_path.metadata().unwrap().modified().unwrap()
+    } else {
+        UNIX_EPOCH
+    };
 
     let output_nonexistent = !file_output_path.is_file();
     let output_outdated =
