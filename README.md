@@ -11,5 +11,5 @@ converts your markdown in the `docs` folder on the fly to html
 ### Example
 
 ```sh
-docker run -p 8000:8000 localhost/markdown-server:latest
+docker run -p 8000:8000 3n3a/markdown-server:latest
 ```
