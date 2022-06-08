@@ -1,5 +1,7 @@
 # markdown-server
 
+[![.github/workflows/build-docker-image.yml](https://github.com/3n3a/markdown-server/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/3n3a/markdown-server/actions/workflows/build-docker-image.yml)
+
 converts your markdown in the `docs` folder on the fly to html
 
 ## Docker
