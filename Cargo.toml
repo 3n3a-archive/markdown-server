@@ -1,5 +1,5 @@
 [package]
-name = "test-hyper-rs"
+name = "markdown-server"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,3 +12,4 @@ lto = true
 [dependencies]
 rocket = "0.5.0-rc.2"
 pandoc = "0.8"
+once_cell = "1.12.0"

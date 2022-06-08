@@ -605,6 +605,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "markdown-server"
+version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "pandoc",
+ "rocket",
+]
+
+[[package]]
 name = "matchers"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1142,14 +1151,6 @@ dependencies = [
  "redox_syscall",
  "remove_dir_all",
  "winapi",
-]
-
-[[package]]
-name = "test-hyper-rs"
-version = "0.1.0"
-dependencies = [
- "pandoc",
- "rocket",
 ]
 
 [[package]]

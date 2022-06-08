@@ -5,16 +5,18 @@ use pandoc;
 use rocket::fs::{FileServer, NamedFile, Options};
 use std::path::{Path, PathBuf};
 use std::time::UNIX_EPOCH;
+use std::env;
+use once_cell::sync::Lazy;
 
-const ASSETS_PATH: &str = "files";
-const PANDOC_IN_PATH: &str = "docs";
-const PANDOC_OUT_PATH: &str = "docs/generated";
+const ASSETS_PATH: Lazy<String> = Lazy::new(||env::var("ASSETS_PATH").unwrap_or(String::from("files")) );
+const PANDOC_IN_PATH: Lazy<String> = Lazy::new(||env::var("PANDOC_IN_PATH").unwrap_or(String::from("docs")) );
+const PANDOC_OUT_PATH: Lazy<String> = Lazy::new(||env::var("PANDOC_OUT_PATH").unwrap_or(String::from("docs/generated")) );
 
 #[launch]
 fn rocket() -> _ {
     let file_server_options = Options::None | Options::Index | Options::NormalizeDirs;
     rocket::build()
-        .mount("/assets", FileServer::new(ASSETS_PATH, file_server_options))
+        .mount("/assets", FileServer::new((*ASSETS_PATH).clone(), file_server_options))
         .mount("/", routes![files])
 }
 
@@ -52,9 +54,9 @@ async fn files(file: PathBuf) -> Option<NamedFile> {
 
 fn convert_md_to_html(file_stem: &str) -> PathBuf {
     let file_input_path: PathBuf =
-        PathBuf::from_iter([PANDOC_IN_PATH, &format!("{}.md", file_stem)].iter());
+        PathBuf::from_iter([(*PANDOC_IN_PATH).clone(), format!("{}.md", file_stem)].iter());
     let file_output_path: PathBuf =
-        PathBuf::from_iter([PANDOC_OUT_PATH, &format!("{}.html", file_stem)].iter());
+        PathBuf::from_iter([(*PANDOC_OUT_PATH).clone(), format!("{}.html", file_stem)].iter());
 
     if !file_input_path.is_file() {
         return PathBuf::new();
