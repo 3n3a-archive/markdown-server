@@ -1,6 +1,6 @@
 # markdown-server
 
-[![.github/workflows/build-docker-image.yml](https://github.com/3n3a/markdown-server/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/3n3a/markdown-server/actions/workflows/build-docker-image.yml)
+[![.github/workflows/build-docker-image.yml](https://github.com/3n3a/markdown-server/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/3n3a/markdown-server/actions/workflows/build-docker-image.yml) | [![](https://img.shields.io/badge/docker-markdown--server-blue)](https://hub.docker.com/r/3n3a/markdown-server)
 
 converts your markdown in the `docs` folder on the fly to html
 
